@@ -1,0 +1,106 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>PokéPad</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link href="https://fonts.googleapis.com/css2?family=Baloo+2:wght@600;700;800&family=Space+Grotesk:wght@400;500;700&family=IBM+Plex+Mono:wght@400;600&display=swap" rel="stylesheet">
+<link rel="stylesheet" href="style.css">
+</head>
+<body>
+
+  <header class="shell-header">
+    <div class="wordmark">
+      <span class="ball-icon" aria-hidden="true">
+        <span class="ball-icon-dial"></span>
+        <span class="ball-icon-pulse"></span>
+      </span>
+      PokéPad
+    </div>
+
+    <div class="gen-dial" id="genDial">
+      <button class="dial-btn active" data-gen="0">ALL</button>
+      <button class="dial-btn" data-gen="1">I</button>
+      <button class="dial-btn" data-gen="2">II</button>
+      <button class="dial-btn" data-gen="3">III</button>
+      <button class="dial-btn" data-gen="4">IV</button>
+      <button class="dial-btn" data-gen="5">V</button>
+      <button class="dial-btn" data-gen="6">VI</button>
+      <button class="dial-btn" data-gen="7">VII</button>
+      <button class="dial-btn" data-gen="8">VIII</button>
+      <button class="dial-btn" data-gen="9">IX</button>
+    </div>
+  </header>
+
+  <main class="layout">
+
+    <section class="panel catalog-panel">
+      <div class="panel-label">Music Library <span class="eyebrow" id="catalogCount"></span></div>
+      <div class="catalog-list" id="catalogList"></div>
+    </section>
+
+    <aside class="panel side-panel">
+
+      <div class="lcd-screen now-playing-screen">
+        <div class="lcd-label">Now Playing</div>
+        <div id="nowPlayingInfo">
+          <div class="np-title">— nothing queued yet —</div>
+          <div class="np-meta">Enqueue a track to get started</div>
+        </div>
+      </div>
+
+      <div class="tabs" id="sideTabs">
+        <button class="tab-btn active" data-tab="playlist">Playlist</button>
+        <button class="tab-btn" data-tab="queue">Queue</button>
+        <button class="tab-btn" data-tab="history">History</button>
+      </div>
+
+      <div class="tab-panel active" id="tab-playlist">
+        <div class="tab-toolbar">
+          <button class="mini-btn" id="playlistPrevBtn">&#8592; Prev</button>
+          <button class="mini-btn" id="playlistNextBtn">Next &#8594;</button>
+          <button class="mini-btn danger" id="playlistClearBtn">Clear</button>
+        </div>
+        <div class="lcd-list" id="playlistList"></div>
+      </div>
+
+      <div class="tab-panel" id="tab-queue">
+        <div class="tab-toolbar">
+          <button class="mini-btn" id="queuePlayBtn">&#9654; Play next in queue</button>
+        </div>
+        <div class="lcd-list" id="queueList"></div>
+      </div>
+
+      <div class="tab-panel" id="tab-history">
+        <div class="tab-toolbar">
+          <button class="mini-btn" id="historyUndoBtn">&#8634; Undo last skip</button>
+        </div>
+        <div class="lcd-list" id="historyList"></div>
+      </div>
+
+    </aside>
+  </main>
+
+  <footer class="transport-bar">
+    <div class="transport-track">
+      <div class="transport-title" id="transportTitle">No track loaded</div>
+      <div class="transport-sub" id="transportSub">—</div>
+    </div>
+    <div class="transport-controls">
+      <button id="prevBtn" title="Previous in playlist">&#9198;</button>
+      <button id="playPauseBtn" title="Play / Pause">&#9654;</button>
+      <button id="nextBtn" title="Next in playlist">&#9197;</button>
+    </div>
+    <div class="transport-time">
+      <span id="curTime">0:00</span>
+      <input type="range" id="seekBar" value="0" min="0" max="100" step="0.1">
+      <span id="durTime">0:00</span>
+    </div>
+  </footer>
+
+  <audio id="audioPlayer"></audio>
+
+  <script src="script.js"></script>
+</body>
+</html>
