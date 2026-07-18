@@ -13,8 +13,6 @@ struct QueueNode {
     QueueNode(Track t) : track(t), next(nullptr) {}
 };
 
-// Song request queue - strict FIFO. Songs are enqueued by the user,
-// then dequeued and "played" in order, like a DJ queue.
 class SongQueue {
 private:
     QueueNode* front;
@@ -68,7 +66,6 @@ public:
         count = 0;
     }
 
-    // Traverses front -> rear to build a vector for JSON output
     vector<Track> toVector() const {
         vector<Track> result;
         QueueNode* node = front;
@@ -78,10 +75,6 @@ public:
         }
         return result;
     }
-
-    // Intentionally no saveToFile()/loadFromFile(): per the proposal's
-    // limitations (4.0 "No data persistence"), the queue lives in memory
-    // only for the current session and is never written to disk.
 };
 
 #endif
