@@ -10,8 +10,6 @@ using namespace std;
 
 const int MAX_CATALOG_SIZE = 400;
 
-// Master music catalog - a fixed-size array of all Pokemon OST tracks.
-// This is read-only from the user's point of view (see proposal section 4.0).
 class Catalog {
 private:
     Track tracks[MAX_CATALOG_SIZE];
@@ -57,7 +55,6 @@ public:
         return result;
     }
 
-    // Linear search through the array by id
     bool findById(int id, Track& outTrack) const {
         for (int i = 0; i < count; i++) {
             if (tracks[i].id == id) {
