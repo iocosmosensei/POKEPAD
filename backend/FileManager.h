@@ -7,11 +7,6 @@
 
 using namespace std;
 
-// Simple helper for reading Track data from a .txt file.
-// Only used to load the fixed, read-only master catalog at startup — per
-// the proposal's "No data persistence" limitation, the playlist, queue, and
-// history are in-memory only and are never written to disk, so no write
-// helper is needed here.
 namespace FileManager {
 
     inline vector<Track> readTracks(const string& path) {
