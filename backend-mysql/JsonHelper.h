@@ -5,10 +5,6 @@
 
 using namespace std;
 
-// Very small helper for pulling one field out of a flat JSON object body,
-// e.g. body = {"trackId": 5, "position": "front"}
-// We don't need a full JSON library since our frontend only ever sends
-// simple, flat objects like this.
 namespace JsonHelper {
 
     inline bool findField(const string& body, const string& key, string& rawValue) {
@@ -35,7 +31,6 @@ namespace JsonHelper {
             rawValue = value;
             return true;
         } else {
-            // number, bool, or null - read until , or } or whitespace
             size_t end = i;
             while (end < body.size() && body[end] != ',' && body[end] != '}' &&
                    body[end] != ' ' && body[end] != '\n' && body[end] != '\r') {
