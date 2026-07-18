@@ -45,7 +45,6 @@ public:
         count--;
         return true;
     }
-
     bool peekFront(Track& outTrack) const {
         if (front == nullptr) return false;
         outTrack = front->track;
