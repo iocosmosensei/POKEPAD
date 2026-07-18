@@ -10,9 +10,6 @@
 
 using namespace std;
 
-// Wraps a single MySQL connection and the handful of queries PokePad needs.
-// This replaces FileManager.h from the file-handling version - same job
-// (load/save Track data), different storage.
 class Database {
 private:
     MYSQL* conn;
@@ -36,9 +33,6 @@ public:
             return false;
         }
 
-        // Without this, accented characters (Pokémon, etc.) come back mangled
-        // because the connection defaults to a different charset than the
-        // utf8mb4 tables actually use.
         mysql_set_character_set(conn, "utf8mb4");
 
         return true;
@@ -61,7 +55,6 @@ public:
         return true;
     }
 
-    // ---- catalog: read-only master library, loaded once at startup ----
     vector<Track> loadCatalog() {
         vector<Track> tracks;
         if (!runUpdate("SELECT id, title, game, generation, composer, duration, filename "
@@ -86,12 +79,6 @@ public:
         mysql_free_result(result);
         return tracks;
     }
-
-    // Intentionally no playlist/queue/history persistence helpers here:
-    // per the proposal's limitations (4.0 "No data persistence"), those
-    // structures live in memory only for the current session and are
-    // never written to the database. Only the fixed master catalog above
-    // is backed by MySQL.
 };
 
 #endif
