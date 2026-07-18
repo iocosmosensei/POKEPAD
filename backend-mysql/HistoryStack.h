@@ -9,8 +9,6 @@ using namespace std;
 
 const int MAX_HISTORY = 100;
 
-// Playback history - array-based LIFO stack. Every track played through
-// the queue gets pushed here. Users can pop the top entry to undo a skip.
 class HistoryStack {
 private:
     Track items[MAX_HISTORY];
@@ -43,7 +41,6 @@ public:
 
     void clear() { top = -1; }
 
-    // Returns most-recently-played first (top of stack first)
     vector<Track> toVector() const {
         vector<Track> result;
         for (int i = top; i >= 0; i--) {
@@ -51,11 +48,6 @@ public:
         }
         return result;
     }
-
-    // Intentionally no saveToDatabase()/loadFromDatabase(): per the
-    // proposal's limitations (4.0 "No data persistence"), playback history
-    // lives in memory only for the current session and is never written to
-    // the database.
 };
 
 #endif
