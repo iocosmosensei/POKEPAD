@@ -6,10 +6,6 @@ DROP TABLE IF EXISTS queue;
 DROP TABLE IF EXISTS playlist;
 DROP TABLE IF EXISTS catalog;
 
--- Only the fixed master catalog is persisted. Per the proposal's
--- limitations (4.0 "No data persistence" / "No Playlist Persistence"),
--- the playlist, queue, and history are session-only and live purely in
--- memory in the C++ backend, so there are no tables for them here.
 CREATE TABLE catalog (
     id INT PRIMARY KEY,
     title VARCHAR(255) NOT NULL,
@@ -20,7 +16,6 @@ CREATE TABLE catalog (
     filename VARCHAR(255)
 );
 
--- seed data: full Pokemon OST catalog, filenames organized into Generation 1/..Generation 9/ subfolders
 INSERT INTO catalog (id, title, game, generation, composer, duration, filename) VALUES
 (1, 'Pokemon BlueRed - Pallet Town', 'Pokémon Red, Green, and Blue', 1, 'Junichi Masuda / Go Ichinose', '3:16', 'Generation 1/Pokémon Red-Blue-Yellow/Pokemon BlueRed - Pallet Town.mp3'),
 (2, 'Pokémon Red & Blue Music: Opening Theme', 'Pokémon Red, Green, and Blue', 1, 'Junichi Masuda / Go Ichinose', '2:41', 'Generation 1/Pokémon Red-Blue-Yellow/Pokémon Red & Blue Music_ Opening Theme.mp3'),
