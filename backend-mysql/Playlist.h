@@ -15,9 +15,6 @@ struct PlaylistNode {
     PlaylistNode(Track t) : track(t), prev(nullptr), next(nullptr) {}
 };
 
-// Playlist - powered by a doubly linked list so the user can move
-// forward (next song) and backward (previous song) through it.
-// The linked-list logic is identical to the file-handling version.
 class Playlist {
 private:
     PlaylistNode* head;
@@ -118,10 +115,6 @@ public:
         return result;
     }
 
-    // Intentionally no saveToDatabase()/loadFromDatabase(): per the
-    // proposal's limitations (4.0 "No data persistence"), the playlist
-    // lives in memory only for the current session and is never written
-    // to the database.
 };
 
 #endif
