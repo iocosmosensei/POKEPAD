@@ -8,15 +8,14 @@
 
 using namespace std;
 
-// Represents one Pokemon OST entry in the catalog.
 struct Track {
     int id;
     string title;
     string game;
     int generation;
     string composer;
-    string duration;  // stored as "mm:ss"
-    string filename;  // audio file inside frontend/audio/
+    string duration;  
+    string filename;  
 
     Track() : id(-1), generation(0) {}
 
@@ -25,7 +24,6 @@ struct Track {
         : id(id), title(title), game(game), generation(generation),
           composer(composer), duration(duration), filename(filename) {}
 
-    // Turns a Track into one pipe-delimited line for saving to a .txt file
     string toLine() const {
         stringstream ss;
         ss << id << "|" << title << "|" << game << "|" << generation << "|"
@@ -33,7 +31,6 @@ struct Track {
         return ss.str();
     }
 
-    // Turns a Track into a small JSON object (built by hand, no library)
     string toJson() const {
         stringstream ss;
         ss << "{"
@@ -48,12 +45,6 @@ struct Track {
         return ss.str();
     }
 
-    // Escapes a string for safe embedding inside a JSON string literal.
-    // Handles quotes/backslashes plus raw control characters (newline, tab,
-    // carriage return, etc.) — without this, a stray control character
-    // anywhere in the data (e.g. from a copy-paste or a manual database
-    // edit) produces invalid JSON and breaks parsing for the whole
-    // response, not just that one record.
     static string escape(const string& s) {
         string out;
         for (unsigned char c : s) {
@@ -76,8 +67,6 @@ struct Track {
         return out;
     }
 
-    // Splits a line like "1|Route 1|Red and Blue|1|Junichi Masuda|1:32|route1.mp3"
-    // back into a Track. Returns a Track with id -1 if the line is malformed.
     static Track fromLine(const string& line) {
         vector<string> parts;
         stringstream ss(line);
@@ -99,7 +88,6 @@ struct Track {
     }
 };
 
-// Turns a vector of Tracks into a JSON array string, e.g. [ {...}, {...} ]
 inline string tracksToJsonArray(const vector<Track>& tracks) {
     stringstream ss;
     ss << "[";
