@@ -11,8 +11,6 @@
 using namespace std;
 using namespace httplib;
 
-// ---- MySQL connection settings ----
-// Change these if your local MySQL setup is different.
 const string DB_HOST = "localhost";
 const string DB_USER = "root";
 const string DB_PASSWORD = "";
@@ -48,19 +46,12 @@ int main() {
 
     Server svr;
 
-    // ---- Load only the fixed master catalog from the database on startup ----
-    // Per the proposal's limitations (4.0 "No data persistence" / "No Playlist
-    // Persistence"), the playlist, queue, and history are session-only and
-    // live purely in memory below. They are intentionally never read from or
-    // written to the database, so they reset every time the server restarts.
     catalog.loadFromDatabase(db);
 
     cout << "Connected to MySQL. Loaded " << catalog.size() << " tracks into the catalog.\n";
 
-    // Serve the frontend (index.html, style.css, script.js) as static files
     svr.set_mount_point("/", "../frontend");
 
-    // ---------------- CATALOG ----------------
     svr.Get("/api/catalog", [](const Request& req, Response& res) {
         vector<Track> result;
         if (req.has_param("generation")) {
@@ -74,7 +65,6 @@ int main() {
         setJson(res, tracksToJsonArray(result));
     });
 
-    // ---------------- PLAYLIST (doubly linked list) ----------------
     svr.Get("/api/playlist", [](const Request&, Response& res) {
         setJson(res, tracksToJsonArray(playlist.toVector()));
     });
@@ -133,7 +123,6 @@ int main() {
         setJson(res, t.toJson());
     });
 
-    // ---------------- SONG REQUEST QUEUE (FIFO) ----------------
     svr.Get("/api/queue", [](const Request&, Response& res) {
         setJson(res, tracksToJsonArray(songQueue.toVector()));
     });
@@ -162,7 +151,6 @@ int main() {
         setJson(res, t.toJson());
     });
 
-    // ---------------- PLAYBACK HISTORY (array-based stack) ----------------
     svr.Get("/api/history", [](const Request&, Response& res) {
         setJson(res, tracksToJsonArray(history.toVector()));
     });
@@ -178,7 +166,6 @@ int main() {
         setJson(res, t.toJson());
     });
 
-    // ---------------- NOW PLAYING ----------------
     svr.Get("/api/now-playing", [](const Request&, Response& res) {
         if (!hasNowPlaying) {
             setError(res, 404, "Nothing is playing");
