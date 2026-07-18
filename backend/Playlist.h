@@ -15,13 +15,11 @@ struct PlaylistNode {
     PlaylistNode(Track t) : track(t), prev(nullptr), next(nullptr) {}
 };
 
-// Playlist - powered by a doubly linked list so the user can move
-// forward (next song) and backward (previous song) through it.
 class Playlist {
 private:
     PlaylistNode* head;
     PlaylistNode* tail;
-    PlaylistNode* current;  // marks the currently selected song, for next()/previous()
+    PlaylistNode* current;
     int count;
 
 public:
@@ -53,7 +51,6 @@ public:
         count++;
     }
 
-    // Removes the first song found with a matching title (case-sensitive)
     bool removeByTitle(const string& title) {
         PlaylistNode* node = head;
         while (node != nullptr) {
@@ -86,7 +83,6 @@ public:
         count = 0;
     }
 
-    // Moves current pointer forward, returns the new current track
     bool next(Track& outTrack) {
         if (current == nullptr || current->next == nullptr) return false;
         current = current->next;
@@ -94,7 +90,6 @@ public:
         return true;
     }
 
-    // Moves current pointer backward, returns the new current track
     bool previous(Track& outTrack) {
         if (current == nullptr || current->prev == nullptr) return false;
         current = current->prev;
@@ -110,7 +105,6 @@ public:
 
     int size() const { return count; }
 
-    // Traverses head -> tail to build a vector for JSON output
     vector<Track> toVector() const {
         vector<Track> result;
         PlaylistNode* node = head;
@@ -121,9 +115,6 @@ public:
         return result;
     }
 
-    // Intentionally no saveToFile()/loadFromFile(): per the proposal's
-    // limitations (4.0 "No data persistence"), the playlist lives in memory
-    // only for the current session and is never written to disk.
 };
 
 #endif
