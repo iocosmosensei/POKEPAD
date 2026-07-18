@@ -1,16 +1,8 @@
 const API = "http://localhost:8080/api";
 
-let currentTrack = null;   // the track object currently loaded in the audio player
-let currentGen = 0;        // 0 = all generations
+let currentTrack = null;   
+let currentGen = 0;        
 
-// ---------- small helpers ----------
-
-// Safely embeds a JSON blob inside a single-quoted HTML attribute
-// (e.g. onclick='...'). JSON.stringify only escapes double quotes, not
-// apostrophes, so any string value containing one (like a track title —
-// "Tarragon's Garage") would otherwise break out of the attribute early
-// and corrupt the inline handler. HTML-encoding the apostrophe keeps the
-// attribute intact; the browser decodes it back to ' before JS parses it.
 function jsonForAttr(obj) {
   return JSON.stringify(obj).replace(/'/g, "&#39;");
 }
@@ -35,7 +27,6 @@ function trackMetaLine(t) {
   return `Gen ${t.generation} · ${t.game} · ${t.duration} · ${t.composer}`;
 }
 
-// ---------- CATALOG ----------
 
 async function loadCatalog() {
   const path = currentGen === 0 ? "/catalog" : `/catalog?generation=${currentGen}`;
@@ -67,7 +58,6 @@ function renderCatalog(tracks) {
   `).join("");
 }
 
-// ---------- GENERATION DIAL ----------
 
 document.getElementById("genDial").addEventListener("click", (e) => {
   const btn = e.target.closest(".dial-btn");
@@ -78,7 +68,6 @@ document.getElementById("genDial").addEventListener("click", (e) => {
   loadCatalog();
 });
 
-// ---------- TABS ----------
 
 document.getElementById("sideTabs").addEventListener("click", (e) => {
   const btn = e.target.closest(".tab-btn");
@@ -89,7 +78,6 @@ document.getElementById("sideTabs").addEventListener("click", (e) => {
   document.getElementById("tab-" + btn.dataset.tab).classList.add("active");
 });
 
-// ---------- PLAYLIST (doubly linked list) ----------
 
 async function addToPlaylist(trackId, position) {
   await apiPost("/playlist/add", { trackId, position });
@@ -124,7 +112,6 @@ document.getElementById("playlistPrevBtn").addEventListener("click", async () =>
   if (t && !t.error) loadTrack(t, true);
 });
 
-// ---------- QUEUE (FIFO) ----------
 
 async function addToQueue(trackId) {
   await apiPost("/queue/enqueue", { trackId });
@@ -145,7 +132,6 @@ document.getElementById("queuePlayBtn").addEventListener("click", async () => {
   }
 });
 
-// ---------- HISTORY (stack) ----------
 
 async function loadHistory() {
   const tracks = await apiGet("/history");
@@ -160,7 +146,6 @@ document.getElementById("historyUndoBtn").addEventListener("click", async () => 
   }
 });
 
-// ---------- shared LCD list renderer ----------
 
 function renderLcdList(elementId, tracks, actionsHtml) {
   const el = document.getElementById(elementId);
@@ -179,7 +164,6 @@ function renderLcdList(elementId, tracks, actionsHtml) {
   `).join("");
 }
 
-// ---------- PLAYBACK ----------
 
 const audio = document.getElementById("audioPlayer");
 
@@ -196,8 +180,6 @@ function loadTrack(t, autoplay) {
     <div class="np-meta">${trackMetaLine(t)}</div>
   `;
 
-  // filenames can contain spaces, &, :, etc. - encode each path segment
-  // (gen folder / actual filename) separately so the URL is valid
   audio.src = "audio/" + t.filename.split("/").map(encodeURIComponent).join("/");
   audio.currentTime = 0;
 
@@ -251,7 +233,6 @@ function formatTime(sec) {
   return `${m}:${s.toString().padStart(2, "0")}`;
 }
 
-// ---------- INITIAL LOAD ----------
 
 loadCatalog();
 loadPlaylist();
